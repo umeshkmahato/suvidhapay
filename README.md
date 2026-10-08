@@ -185,6 +185,8 @@ Current operational docs:
 - `DATABASE.md` - schema reference
 - `PHASE1_TEST_CASES.md` - manual and API test coverage for Phase 1
 - `PHASE1_VALIDATION_CHECKLIST.md` - acceptance checklist for Phase 1
+- `PHASE2.md` - rate master, dues, and outstanding design
+- `PHASE2_TEST_CASES.md` - Phase 2 testing checklist
 
 Historical/reference docs:
 

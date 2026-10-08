@@ -1,0 +1,69 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-suvidhapay}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-suvidhapay}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  api:
+    build:
+      context: ./SuvidhaPay-api
+      dockerfile: Dockerfile
+    environment:
+      PORT: 3001
+      NODE_ENV: ${NODE_ENV:-development}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-suvidhapay}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      JWT_SECRET: ${JWT_SECRET:-change-me}
+      JWT_EXPIRY: ${JWT_EXPIRY:-7d}
+      JWT_REFRESH_EXPIRY: ${JWT_REFRESH_EXPIRY:-30d}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-900000}
+      RATE_LIMIT_MAX_REQUESTS: ${RATE_LIMIT_MAX_REQUESTS:-100}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      LOG_DIR: /app/logs
+      ENABLE_API_DOCS: ${ENABLE_API_DOCS:-true}
+    ports:
+      - "${API_PORT:-3001}:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3001/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  web:
+    build:
+      context: ./SuvidhaPay-web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+        VITE_APP_NAME: ${VITE_APP_NAME:-SuvidhaPay}
+        VITE_APP_VERSION: ${VITE_APP_VERSION:-1.0.0}
+        VITE_ENV: ${VITE_ENV:-development}
+        VITE_DEBUG: ${VITE_DEBUG:-false}
+        VITE_LOG_LEVEL: ${VITE_LOG_LEVEL:-info}
+    ports:
+      - "${WEB_PORT:-3000}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+    name: ${COMPOSE_PROJECT_NAME:-suvidhapay}_postgres_data

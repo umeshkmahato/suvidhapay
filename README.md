@@ -5,8 +5,6 @@ Municipal collection management system built with React, Node.js/Express, Postgr
 ## Start here
 
 - Use this `README.md` for the main day-to-day workflow.
-- Read `ENV_SETUP_GUIDE.md` next if you need the env-file strategy.
-- Read `DOCKER_COMPOSE_GUIDE.md` for detailed Docker operations.
 - Do **not** copy the root Docker env files into `SuvidhaPay-api/` or `SuvidhaPay-web/`.
 
 ## Quick start
@@ -172,27 +170,6 @@ Important cleanup fixes included:
 - Compose project names isolate local, dev, and prod resources so volumes do not collide.
 - App images now use `npm ci` and `.dockerignore` files for cleaner, more reproducible builds.
 
-## Documentation map
-
-Current operational docs:
-
-- `DOCKER_COMPOSE_GUIDE.md` - Docker workflows and commands
-- `ENV_SETUP_GUIDE.md` - how env files are intended to be used
-- `ENVIRONMENT_CONFIGURATION.md` - variable reference
-- `SETUP_VERIFICATION.md` - validation summary after cleanup
-- `QUICK_REFERENCE.md` - short command/reference sheet
-- `API_DOCUMENTATION.md` - API reference
-- `DATABASE.md` - schema reference
-- `PHASE1_TEST_CASES.md` - manual and API test coverage for Phase 1
-- `PHASE1_VALIDATION_CHECKLIST.md` - acceptance checklist for Phase 1
-- `PHASE2.md` - rate master, dues, and outstanding design
-- `PHASE2_TEST_CASES.md` - Phase 2 testing checklist
-
-Historical/reference docs:
-
-- `ENVIRONMENT_AUTOMATION_SUMMARY.md` - cleanup summary
-- `IMPLEMENTATION_SUMMARY.md` - historical implementation snapshot
-- `COMPLETION_REPORT.md` - historical project status snapshot
 
 ## Project structure
 

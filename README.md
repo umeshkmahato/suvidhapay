@@ -16,21 +16,21 @@ Municipal collection management system built with React, Node.js/Express, Postgr
 Local development stack:
 
 ```bash
-cd /Users/um747e/learning/six-pillers/SuvidhaPay
+cd ~/SuvidhaPay
 docker compose --env-file .env.local -f docker-compose.yml -f docker-compose.local.yml up -d --build
 ```
 
 Staging/development stack:
 
 ```bash
-cd /Users/um747e/learning/six-pillers/SuvidhaPay
+cd ~/SuvidhaPay
 docker compose --env-file .env.dev -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 ```
 
 Production-style stack:
 
 ```bash
-cd /Users/um747e/learning/six-pillers/SuvidhaPay
+cd ~/SuvidhaPay
 docker compose --env-file .env.prod -f docker-compose.yml -f docker-compose.prod.yml up -d --build
 ```
 
@@ -56,7 +56,7 @@ The API container now bootstraps the database automatically on startup by runnin
 1. Backend:
 
 ```bash
-cd /Users/um747e/learning/six-pillers/SuvidhaPay/SuvidhaPay-api
+cd ~/SuvidhaPay/SuvidhaPay-api
 cp .env.example .env
 npm install
 npm run migrate
@@ -66,7 +66,7 @@ npm run dev
 2. Frontend:
 
 ```bash
-cd /Users/um747e/learning/six-pillers/SuvidhaPay/SuvidhaPay-web
+cd ~/SuvidhaPay/SuvidhaPay-web
 cp .env.example .env
 npm install
 npm run dev

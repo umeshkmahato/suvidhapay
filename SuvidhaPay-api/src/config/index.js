@@ -29,4 +29,8 @@ export default {
     level: process.env.LOG_LEVEL || 'debug',
     dir: process.env.LOG_DIR || './logs',
   },
+  docs: {
+    enabled: process.env.ENABLE_API_DOCS === 'true',
+    baseUrl: process.env.API_BASE_URL || `http://localhost:${Number.parseInt(process.env.PORT, 10) || 3001}`,
+  },
 };

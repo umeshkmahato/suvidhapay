@@ -5,6 +5,12 @@ import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import config from './config/index.js';
 import apiRoutes from './routes/index.js';
+import getOpenAPISpec from './docs/openapi.js';
+import {
+  getScalarHTML,
+  getScalarJavaScript,
+  scalarContentSecurityPolicy,
+} from './docs/scalar.js';
 
 const app = express();
 
@@ -69,6 +75,34 @@ if (config.server.nodeEnv === 'development') {
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
+
+// API Documentation (OpenAPI & Scalar)
+if (config.docs.enabled) {
+  // OpenAPI JSON specification endpoint
+  app.get('/openapi.json', (req, res) => {
+    res.json(getOpenAPISpec());
+  });
+
+  app.get('/docs/scalar.js', (req, res) => {
+    res.type('application/javascript');
+    res.send(getScalarJavaScript());
+  });
+
+  // Scalar API Reference UI
+  app.get('/docs', async (req, res, next) => {
+    try {
+      const openApiSpec = getOpenAPISpec();
+
+      res.set('Content-Security-Policy', scalarContentSecurityPolicy);
+      res.set('X-Content-Type-Options', 'nosniff');
+      res.set('Referrer-Policy', 'no-referrer');
+      res.type('text/html; charset=utf-8');
+      res.send(await getScalarHTML(openApiSpec));
+    } catch (error) {
+      next(error);
+    }
+  });
+}
 
 // Routes
 app.use('/api', apiRoutes);

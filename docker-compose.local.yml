@@ -1,0 +1,15 @@
+services:
+  postgres:
+    ports:
+      - "${DB_PORT:-5432}:5432"
+
+  adminer:
+    image: adminer:4-standalone
+    ports:
+      - "${ADMINER_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_started
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+

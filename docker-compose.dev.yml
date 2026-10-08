@@ -1,0 +1,11 @@
+services:
+  postgres:
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    restart: unless-stopped
+
+  api:
+    restart: unless-stopped
+
+  web:
+    restart: unless-stopped
